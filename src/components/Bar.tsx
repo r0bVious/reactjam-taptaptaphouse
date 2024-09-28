@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Customer from "./Customer";
 
-type Props = {};
+const Bar = () => {
+  const [barWidth, setBarWidth] = useState(0);
+  const barRef = useRef<HTMLDivElement | null>(null);
 
-const Bar = (props: Props) => {
+  useEffect(() => {
+    if (barRef.current) {
+      setBarWidth(barRef.current.offsetWidth);
+    }
+  }, []);
+
+  const spawnCustomer = () => {
+    //how does react handle this? vanillaJS would grab the dom and attach a new element
+  };
+
+  //If number of customers doesn't exceed maximum, give a chance for spawn. if triggered, spawncustomer() above
+
   return (
-    <div className="bar">
-      <Customer />
+    <div className="bar" ref={barRef}>
+      {barWidth > 0 && <Customer barWidth={barWidth} />}
     </div>
   );
 };
