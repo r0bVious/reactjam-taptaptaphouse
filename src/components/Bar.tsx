@@ -4,6 +4,7 @@ import Customer from "./Customer";
 const Bar = () => {
   const [barWidth, setBarWidth] = useState(0);
   const barRef = useRef<HTMLDivElement | null>(null);
+  const [customers, setCustomers] = useState<number[]>([]);
 
   useEffect(() => {
     if (barRef.current) {
@@ -12,14 +13,34 @@ const Bar = () => {
   }, []);
 
   const spawnCustomer = () => {
-    //how does react handle this? vanillaJS would grab the dom and attach a new element
+    const chance = Math.random();
+    if (chance < 0.3) {
+      const newCustomerID = Date.now();
+      setCustomers((prev) => [...prev, newCustomerID]);
+    }
   };
 
-  //If number of customers doesn't exceed maximum, give a chance for spawn. if triggered, spawncustomer() above
+  const dropCustomer = (customerID: number) => {
+    setCustomers((existingCustomers) =>
+      existingCustomers.filter((id) => id !== customerID)
+    );
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(spawnCustomer, 3000);
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <div className="bar" ref={barRef}>
-      {barWidth > 0 && <Customer barWidth={barWidth} />}
+      {customers.map((customerID) => (
+        <Customer
+          key={customerID}
+          id={customerID}
+          barWidth={barWidth}
+          dropCustomer={dropCustomer}
+        />
+      ))}
     </div>
   );
 };

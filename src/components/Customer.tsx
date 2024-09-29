@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 
 type CustomerProps = {
+  id: number;
   barWidth: number;
+  dropCustomer: (customerID: number) => void;
 };
 
-const Customer: React.FC<CustomerProps> = ({ barWidth }) => {
+const Customer: React.FC<CustomerProps> = ({ id, barWidth, dropCustomer }) => {
   const [position, setPosition] = useState(0);
   const requestRef = useRef<number | null>(null);
   const startTimeRef = useRef<number | null>(null);
@@ -30,15 +32,18 @@ const Customer: React.FC<CustomerProps> = ({ barWidth }) => {
 
     setPosition(newPosition);
 
-    if (newPosition < barWidth) {
+    if (newPosition < barWidth - custWidth * 0.5) {
       requestRef.current = requestAnimationFrame(animate);
     } else {
+      console.log("Customer has reached the end of the bar", id); //END GAME / DAMAGE TRIGGER HERE
+      dropCustomer(id); // placeholder for other game action - currently kills cust div
       cancelAnimationFrame(requestRef.current!);
     }
   };
 
   useEffect(() => {
     if (custRef.current) {
+      console.log(custRef.current);
       setCustWidth(custRef.current.offsetWidth);
     }
 
