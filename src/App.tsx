@@ -1,12 +1,10 @@
 import { useState } from "react";
 import "./App.css";
-import Bar from "./components/Bar";
+import Bar from "./components/GameRow";
 
 function App() {
   return (
     <>
-      <Bar />
-      <Bar />
       <Bar />
     </>
   );
