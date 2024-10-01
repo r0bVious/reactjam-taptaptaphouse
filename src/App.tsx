@@ -1,11 +1,11 @@
 import { useState } from "react";
 import "./App.css";
-import Bar from "./components/GameRow";
+import GameRow from "./components/GameRow";
 
 function App() {
   return (
     <>
-      <Bar />
+      <GameRow />
     </>
   );
 }
