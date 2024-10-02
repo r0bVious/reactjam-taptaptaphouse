@@ -3,28 +3,23 @@ import Customer from "./Customer";
 import Drink from "./Drink";
 import { useGameContext } from "../../GameContext";
 
+type DrinkType = {
+  id: string;
+  position: number;
+  metCust: boolean;
+  returning: boolean;
+};
+
 type GameplayZoneProps = {
-  drink: {
-    id: string;
-    position: number;
-    metCust: boolean;
-    returning: boolean;
-  } | null;
+  drinks: DrinkType[];
   setBarWidth: React.Dispatch<React.SetStateAction<number>>;
-  setDrink: React.Dispatch<
-    React.SetStateAction<{
-      id: string;
-      position: number;
-      metCust: boolean;
-      returning: boolean;
-    } | null>
-  >;
+  setDrinks: React.Dispatch<React.SetStateAction<DrinkType[]>>;
 };
 
 const GameplayZone: React.FC<GameplayZoneProps> = ({
-  drink,
+  drinks,
   setBarWidth,
-  setDrink,
+  setDrinks,
 }) => {
   const barRef = useRef<HTMLDivElement | null>(null);
   const [customers, setCustomers] = useState<
@@ -116,44 +111,65 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
     });
   }, [customers]);
 
-  const updateDrinkPos = () => {
-    if (drink) {
-      const speed = barRef.current!.offsetWidth * 0.25;
-      const newPosition =
-        drink.position - ((drink.metCust ? 1.5 : 3) * speed * diffMulti) / 60;
+  const updateDrinksPos = () => {
+    setDrinks((prevDrinks) => {
+      return prevDrinks
+        .map((drink) => {
+          if (!drink) return null;
 
-      if (newPosition <= 0) {
-        setDrink(null);
-      } else {
-        setDrink({ ...drink, position: newPosition });
-      }
-    }
+          const speed = barRef.current!.offsetWidth * 0.25;
+          const newPosition =
+            drink.position -
+            ((drink.metCust ? 1.5 : 3) * speed * diffMulti) / 60;
+
+          if (newPosition <= 0) {
+            if (!drink.metCust) {
+              setGameOver(true);
+            }
+            return null;
+          }
+
+          return { ...drink, position: newPosition };
+        })
+        .filter((drink): drink is DrinkType => drink !== null);
+    });
   };
 
   // Check for collision between drink and customers
   const checkCollision = () => {
-    if (drink && customers.length > 0) {
-      customers.forEach((cust) => {
-        const distance = Math.abs(drink.position - cust.position);
-        const collisionThreshold = 25;
+    drinks.forEach((drink) => {
+      if (customers.length > 0) {
+        customers.forEach((cust) => {
+          const distance = Math.abs(drink.position - cust.position);
+          const collisionThreshold = 25;
 
-        if (distance < collisionThreshold && !drink.metCust) {
-          setDrink({ ...drink, metCust: true });
-          setCustomers((prevCustomers) =>
-            prevCustomers.map((customer) =>
-              customer.id === cust.id
-                ? { ...customer, returning: true }
-                : customer
-            )
-          );
-        }
-      });
-    }
+          if (
+            distance < collisionThreshold &&
+            !drink.metCust &&
+            !cust.returning
+          ) {
+            // Update drink state and customer returning status
+            setDrinks((prevDrinks) =>
+              prevDrinks.map((d) =>
+                d.id === drink.id ? { ...d, metCust: true } : d
+              )
+            );
+            setCustomers((prevCustomers) =>
+              prevCustomers.map((customer) =>
+                customer.id === cust.id
+                  ? { ...customer, returning: true }
+                  : customer
+              )
+            );
+          }
+        });
+      }
+    });
   };
 
   const animate = () => {
     updateCustomersPos();
-    updateDrinkPos();
+    updateDrinksPos();
     checkCollision();
     animationFrameRef.current = requestAnimationFrame(animate); // Store the ID
   };
@@ -167,14 +183,16 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [drink, customers]);
+  }, [drinks, customers]);
 
   return (
     <div className="bar" ref={barRef} style={{ width: "80%" }}>
       {customers.map((customer) => (
         <Customer key={customer.id} position={customer.position} />
       ))}
-      {drink ? <Drink key={drink.id} position={drink.position} /> : null}
+      {drinks.map((drink) => (
+        <Drink key={drink.id} position={drink.position} />
+      ))}
       {drinksDelivered}
     </div>
   );
