@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Customer from "./Customer";
 import Drink from "./Drink";
+import { useGameContext } from "../../GameContext";
 
 type GameplayZoneProps = {
-  throwDrink: () => void;
   drink: {
     id: string;
     position: number;
@@ -22,7 +22,6 @@ type GameplayZoneProps = {
 };
 
 const GameplayZone: React.FC<GameplayZoneProps> = ({
-  throwDrink,
   drink,
   setBarWidth,
   setDrink,
@@ -33,6 +32,8 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
   >([]);
 
   const animationFrameRef = useRef<number | null>(null);
+  const { setGameOver, setDrinksDelivered, drinksDelivered, diffMulti } =
+    useGameContext();
 
   // Get the width of the bar according to render size
   useEffect(() => {
@@ -44,7 +45,7 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
   // Function to spawn a new customer at position 0
   const spawnCustomer = () => {
     const chance = Math.random();
-    if (chance < 0.7) {
+    if (chance < 0.3 * diffMulti) {
       const newCustomerID = "cust_" + Date.now();
       setCustomers((prev) => [
         ...prev,
@@ -59,11 +60,23 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
     return () => clearInterval(intervalId);
   }, []);
 
-  // Function to remove customer from the DOM when they reach either end
+  // Function to remove customer from the DOM when they reach the end of the bar (placeholder)
   const dropCustomer = (customerID: string) => {
     setCustomers((existingCustomers) =>
       existingCustomers.filter((cust) => cust.id !== customerID)
     );
+  };
+
+  //function to remove successful drink-receiving customers
+  const happyCustomer = (customerID: string) => {
+    console.log("Happy customer:", customerID); // Log to verify this function is firing
+    setCustomers((existingCustomers) =>
+      existingCustomers.filter((cust) => cust.id !== customerID)
+    );
+    setDrinksDelivered((prev) => {
+      console.log("Drinks delivered incremented:", prev + 1); // Log to verify state update
+      return prev + 1;
+    });
   };
 
   // Animation loop that moves each customer based on their state
@@ -72,12 +85,10 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
       prevCustomers.map((cust) => {
         const speed = barRef.current!.offsetWidth * 0.5;
         const newPosition =
-          cust.position + ((cust.returning ? -1.5 : 1) * speed) / 60;
+          cust.position +
+          ((cust.returning ? -1.5 : 1) * speed * diffMulti) / 60;
 
-        if (
-          newPosition <= 0 ||
-          newPosition >= barRef.current!.offsetWidth - 25
-        ) {
+        if (cust.position >= barRef.current!.offsetWidth - 25) {
           dropCustomer(cust.id);
         }
 
@@ -86,11 +97,22 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
     );
   };
 
+  //useEffect handling gamecontext updates
+  useEffect(() => {
+    customers.forEach((cust) => {
+      if (cust.position >= barRef.current!.offsetWidth - 25) {
+        setGameOver(true);
+      } else if (cust.position <= 0 && cust.returning) {
+        happyCustomer(cust.id);
+      }
+    });
+  }, [customers]);
+
   const updateDrinkPos = () => {
     if (drink) {
       const speed = barRef.current!.offsetWidth * 0.5;
       const newPosition =
-        drink.position - ((drink.metCust ? 1.5 : 1) * speed) / 60;
+        drink.position - ((drink.metCust ? 1.5 : 1) * speed * diffMulti) / 60;
 
       if (newPosition <= 0) {
         setDrink(null);
@@ -145,6 +167,7 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
         <Customer key={customer.id} position={customer.position} />
       ))}
       {drink ? <Drink key={drink.id} position={drink.position} /> : null}
+      {drinksDelivered}
     </div>
   );
 };

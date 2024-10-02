@@ -33,7 +33,6 @@ const GameRow = (props: Props) => {
     <>
       <div style={{ display: "flex", width: "100%", border: "2px solid red" }}>
         <GameplayZone
-          throwDrink={throwDrink}
           drink={drink}
           setBarWidth={setBarWidth}
           setDrink={setDrink}
