@@ -56,8 +56,16 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
 
   // On load, begin interval calling spawnCustomer
   useEffect(() => {
-    const intervalId = setInterval(spawnCustomer, 3000);
-    return () => clearInterval(intervalId);
+    const createRandomInterval = () => Math.random() * 1000 + 2500; // Randomized between 2.5 and 3.5 seconds
+    const spawnAndSetInterval = () => {
+      spawnCustomer();
+      const timeoutId = setTimeout(spawnAndSetInterval, createRandomInterval());
+      return timeoutId; // Return the timeout ID (a number)
+    };
+
+    const timeoutId = spawnAndSetInterval(); // Start the loop
+
+    return () => clearTimeout(timeoutId); // Clean up
   }, []);
 
   // Function to remove customer from the DOM when they reach the end of the bar (placeholder)
@@ -68,8 +76,8 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
   };
 
   //function to remove successful drink-receiving customers
-  const happyCustomer = (customerID: string) => {
-    console.log("Happy customer:", customerID); // Log to verify this function is firing
+  const exitCustomer = (customerID: string) => {
+    console.log("Exiting customer:", customerID); // Log to verify this function is firing
     setCustomers((existingCustomers) =>
       existingCustomers.filter((cust) => cust.id !== customerID)
     );
@@ -83,7 +91,7 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
   const updateCustomersPos = () => {
     setCustomers((prevCustomers) =>
       prevCustomers.map((cust) => {
-        const speed = barRef.current!.offsetWidth * 0.5;
+        const speed = barRef.current!.offsetWidth * 0.25;
         const newPosition =
           cust.position +
           ((cust.returning ? -1.5 : 1) * speed * diffMulti) / 60;
@@ -103,16 +111,16 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
       if (cust.position >= barRef.current!.offsetWidth - 25) {
         setGameOver(true);
       } else if (cust.position <= 0 && cust.returning) {
-        happyCustomer(cust.id);
+        exitCustomer(cust.id);
       }
     });
   }, [customers]);
 
   const updateDrinkPos = () => {
     if (drink) {
-      const speed = barRef.current!.offsetWidth * 0.5;
+      const speed = barRef.current!.offsetWidth * 0.25;
       const newPosition =
-        drink.position - ((drink.metCust ? 1.5 : 1) * speed * diffMulti) / 60;
+        drink.position - ((drink.metCust ? 1.5 : 3) * speed * diffMulti) / 60;
 
       if (newPosition <= 0) {
         setDrink(null);

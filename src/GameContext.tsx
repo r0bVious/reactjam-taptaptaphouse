@@ -15,6 +15,8 @@ interface GameContextType {
   setGameOver: Dispatch<SetStateAction<boolean>>;
   gameOver: boolean;
   diffMulti: number;
+  highScore: number;
+  resetGame: () => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -27,10 +29,14 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [drinksDelivered, setDrinksDelivered] = useState<number>(0);
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [diffMulti, setDiffMulti] = useState<number>(1);
+  const [highScore, setHighScore] = useState<number>(0);
 
   //upon loss condition
   useEffect(() => {
     if (gameOver) {
+      if (drinksDelivered > highScore) {
+        setHighScore(drinksDelivered);
+      }
       console.log("Game over triggered");
       //game over stuff here
     }
@@ -54,6 +60,12 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         break;
     }
   }, [drinksDelivered]);
+
+  const resetGame = () => {
+    setDrinksDelivered(0);
+    setGameOver(false);
+  };
+
   return (
     <GameContext.Provider
       value={{
@@ -62,6 +74,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         setGameOver,
         gameOver,
         diffMulti,
+        resetGame,
+        highScore,
       }}
     >
       {children}

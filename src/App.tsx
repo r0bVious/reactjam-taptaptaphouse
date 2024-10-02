@@ -1,16 +1,32 @@
-import { useState } from "react";
 import "./App.css";
 import GameRow from "./components/GameRow";
-import { GameProvider } from "./GameContext";
+import { GameProvider, useGameContext } from "./GameContext";
+import GameOver from "./components/GameOver";
 
 function App() {
   return (
     <>
       <GameProvider>
-        <GameRow />
-        <GameRow />
-        <GameRow />
+        <GameContent />
       </GameProvider>
+    </>
+  );
+}
+
+function GameContent() {
+  const { gameOver } = useGameContext();
+
+  return (
+    <>
+      {gameOver ? (
+        <GameOver />
+      ) : (
+        <>
+          <GameRow />
+          <GameRow />
+          <GameRow />
+        </>
+      )}
     </>
   );
 }

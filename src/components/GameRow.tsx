@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import GameplayZone from "./BarElements/GameplayZone";
 import Tap from "./Tap";
 
-type Props = {};
-
-const GameRow = (props: Props) => {
+const GameRow = () => {
   const [drink, setDrink] = useState<{
     id: string;
     position: number;
@@ -17,15 +15,13 @@ const GameRow = (props: Props) => {
   const throwDrink = () => {
     const newDrinkID = "drink_" + Date.now();
 
-    //only one drink at a time
-    if (!drink) {
-      setDrink({
-        id: newDrinkID,
-        position: barWidth - 25,
-        metCust: false,
-        returning: false,
-      });
-    }
+    setDrink({
+      id: newDrinkID,
+      position: barWidth - 25,
+      metCust: false,
+      returning: false,
+    });
+
     console.log("drink thrown");
   };
 
