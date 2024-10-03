@@ -13,14 +13,19 @@
   height: 100px;
   background: sandybrown;
   position: relative;
+  z-index: 10;
 }
 
 .customer {
-  width: 50px;
-  height: 50px;
-  border-radius: 100%;
-  background: red;
   position: absolute;
+  border: 2px solid yellow;
+  bottom: 0px;
+  z-index: 0;
+}
+
+.customer img {
+  object-fit: cover;
+  transform: scale(0.75);
 }
 
 .drink {

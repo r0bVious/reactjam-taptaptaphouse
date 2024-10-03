@@ -25,6 +25,7 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
   const [customers, setCustomers] = useState<
     { id: string; position: number; returning: boolean }[]
   >([]);
+  const [customerCount, setCustomerCount] = useState(0);
 
   const animationFrameRef = useRef<number | null>(null);
   const { setGameOver, setDrinksDelivered, drinksDelivered, diffMulti } =
@@ -41,7 +42,8 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
   const spawnCustomer = () => {
     const chance = Math.random();
     if (chance < 0.3 * diffMulti) {
-      const newCustomerID = "cust_" + Date.now();
+      const newCustomerID = `cust_${customerCount}_${Math.random()}`;
+      setCustomerCount((prevCount) => prevCount + 1); // Increment customer count
       setCustomers((prev) => [
         ...prev,
         { id: newCustomerID, position: 0, returning: false },
@@ -72,12 +74,10 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
 
   //function to remove successful drink-receiving customers
   const exitCustomer = (customerID: string) => {
-    console.log("Exiting customer:", customerID); // Log to verify this function is firing
     setCustomers((existingCustomers) =>
       existingCustomers.filter((cust) => cust.id !== customerID)
     );
     setDrinksDelivered((prev) => {
-      console.log("Drinks delivered incremented:", prev + 1); // Log to verify state update
       return prev + 1;
     });
   };
@@ -186,9 +186,13 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
   }, [drinks, customers]);
 
   return (
-    <div className="bar" ref={barRef} style={{ width: "80%" }}>
+    <div className="bar" ref={barRef}>
       {customers.map((customer) => (
-        <Customer key={customer.id} position={customer.position} />
+        <Customer
+          key={customer.id}
+          position={customer.position}
+          returning={customer.returning}
+        />
       ))}
       {drinks.map((drink) => (
         <Drink key={drink.id} position={drink.position} />

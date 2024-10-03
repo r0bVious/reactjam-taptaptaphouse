@@ -37,8 +37,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       if (drinksDelivered > highScore) {
         setHighScore(drinksDelivered);
       }
-      console.log("Game over triggered");
-      //game over stuff here
     }
   }, [gameOver]);
 

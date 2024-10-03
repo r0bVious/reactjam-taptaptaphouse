@@ -1,16 +1,14 @@
-import React from "react";
+import Character from "../Character";
 
 type CustomerProps = {
   position: number;
+  returning: boolean;
 };
 
-const Customer: React.FC<CustomerProps> = ({ position }) => {
+const Customer: React.FC<CustomerProps> = ({ position, returning }) => {
   return (
-    <div
-      className="customer"
-      style={{ left: `${position}px`, top: "-25px", position: "absolute" }}
-    >
-      cust
+    <div className="customer" style={{ left: `${position}px` }}>
+      <Character returning={returning} />
     </div>
   );
 };

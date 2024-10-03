@@ -6,7 +6,6 @@ const Tap: React.FC<TapProps> = ({ throwDrink }) => {
   const [fillDrink, setFillDrink] = useState<number>(0);
 
   const pourDrink = () => {
-    console.log(fillDrink);
     if (fillDrink > 2) {
       throwDrink();
       setFillDrink(0);
