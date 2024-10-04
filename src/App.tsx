@@ -2,6 +2,7 @@ import "./App.css";
 import GameRow from "./components/GameRow";
 import { GameProvider, useGameContext } from "./GameContext";
 import GameOver from "./components/GameOver";
+import MainMenu from "./components/MainMenu";
 
 function App() {
   return (
@@ -14,11 +15,13 @@ function App() {
 }
 
 function GameContent() {
-  const { gameOver } = useGameContext();
+  const { gameOver, gameStart } = useGameContext();
 
   return (
     <>
-      {gameOver ? (
+      {!gameStart ? (
+        <MainMenu />
+      ) : gameOver ? (
         <GameOver />
       ) : (
         <>

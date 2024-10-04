@@ -1,10 +1,11 @@
 import { useGameContext } from "../GameContext";
 
 const GameOver = () => {
-  const { drinksDelivered, resetGame, highScore } = useGameContext();
+  const { drinksDelivered, resetGame, highScore, returnToMenu } =
+    useGameContext();
   return (
     <div className="gameover">
-      <h1>Game Over</h1>
+      <h1>You've tapped out!</h1>
       <h2>
         You successfully served {drinksDelivered} drinks to thirsty customers!
       </h2>
@@ -14,6 +15,7 @@ const GameOver = () => {
         <h3>{highScore} is your highest score yet!</h3>
       )}
       <button onClick={resetGame}>Thirsty for more?</button>
+      <button onClick={returnToMenu}>Return to Main Menu</button>
     </div>
   );
 };

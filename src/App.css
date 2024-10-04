@@ -1,47 +1,86 @@
+@font-face {
+  font-family: "FancyPants";
+  src: url("fonts/FancyPants.woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "PressStart2P";
+  src: url("fonts/PressStart2P-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
 #root {
   height: 100vh;
   width: 100vw;
   display: flex;
-  flex-direction: column; /* bar testing */
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.gameplay-row {
+  display: flex;
+  width: 100%;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
 }
 
 .bar {
-  width: 100%;
-  height: 100px;
-  background: sandybrown;
+  width: 80%;
+  height: 100%;
   position: relative;
   z-index: 10;
+  border: 2px solid red;
+  display: flex;
+}
+
+.bar-shape {
+  height: 20%;
+  width: 100%;
+  background: linear-gradient(rgb(179, 113, 55), rgb(48, 27, 4));
+  position: absolute;
+  top: 50%;
+  border-radius: 0 5px 5px 0;
 }
 
 .customer {
   position: absolute;
   border: 2px solid yellow;
-  bottom: 0px;
   z-index: 0;
-}
-
-.customer img {
-  object-fit: cover;
-  transform: scale(0.75);
+  transform: translateY(-50%); /*is this right? */
 }
 
 .drink {
   width: 50px;
   height: 50px;
-  background: lime;
   position: absolute;
 }
 
-.tap {
-  width: 20%;
+.drink img {
   height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.tap {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: darkgreen;
+  border: 2px solid purple;
+}
+
+.tap img {
+  object-fit: cover;
+}
+
+.tap .unfilled {
+  filter: grayscale(100%);
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .gameover {
@@ -50,4 +89,110 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+
+.menu-wrapper {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  text-shadow: 2px 2px 0 black;
+}
+
+.sign-main {
+  position: relative;
+  background: url("wood.png");
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 5px solid rgb(48, 27, 4);
+  animation: 3s ease-out forwards grow-sign;
+}
+
+.fancy {
+  font-family: "FancyPants", serif;
+}
+
+.logo-the {
+  transform: rotate(-10deg);
+  margin: 0 1rem;
+}
+
+.taptaps {
+  position: absolute;
+  bottom: 5%;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 75%;
+}
+
+.logo-taphouse {
+  align-self: flex-end;
+  font-size: 2.25rem;
+  margin: 0 1rem 1rem 3.5rem;
+  letter-spacing: 3px;
+}
+
+.logo-tap {
+  font-size: 2rem;
+}
+
+.pixel {
+  font-family: "PressStart2P", monospace;
+  font-size: 3rem;
+  animation: fadeIn 0.5s steps(2, end) forwards,
+    wiggle 1s steps(3, end) alternate infinite; /* Add fadeIn animation */
+  opacity: 0;
+}
+
+.pixel:nth-of-type(1) {
+  animation-delay: 2s, 0.5s;
+  text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14, 0 0 20px #00e0ff,
+    0 0 40px #00e0ff, 0 0 60px #39ff14;
+}
+
+.pixel:nth-of-type(2) {
+  animation-delay: 3s, 1s;
+  text-shadow: 0 0 5px #ff007f, 0 0 15px #ff007f, 0 0 30px #9d00ff,
+    0 0 45px #9d00ff, 0 0 60px #ff007f;
+}
+
+.pixel:nth-of-type(3) {
+  animation-delay: 4s, 1.5s;
+  text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff, 0 0 20px #00ccff,
+    0 0 40px #00ccff, 0 0 80px #0088ff;
+}
+
+@keyframes wiggle {
+  from {
+    transform: rotate(-8deg);
+  }
+  to {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes grow-sign {
+  from {
+    height: 100px;
+  }
+  to {
+    height: 300px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

@@ -46,8 +46,8 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
       setCustomerCount((prevCount) => prevCount + 1); // Increment customer count
       setCustomers((prev) => [
         ...prev,
-        { id: newCustomerID, position: 0, returning: false },
-      ]);
+        { id: newCustomerID, position: -96, returning: false },
+      ]); //96 is half a customer png
     }
   };
 
@@ -91,7 +91,8 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
           cust.position +
           ((cust.returning ? -1.5 : 1) * speed * diffMulti) / 60;
 
-        if (cust.position >= barRef.current!.offsetWidth - 25) {
+        //96 is half the size of a customer png
+        if (cust.position >= barRef.current!.offsetWidth - 96) {
           dropCustomer(cust.id);
         }
 
@@ -103,8 +104,8 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
   //useEffect handling gamecontext updates
   useEffect(() => {
     customers.forEach((cust) => {
-      if (cust.position >= barRef.current!.offsetWidth - 25) {
-        setGameOver(true);
+      if (cust.position >= barRef.current!.offsetWidth - 96) {
+        setTimeout(() => setGameOver(true), 0); //prevents ill-timed calls during renders?
       } else if (cust.position <= 0 && cust.returning) {
         exitCustomer(cust.id);
       }
@@ -194,6 +195,7 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
           returning={customer.returning}
         />
       ))}
+      <div className="bar-shape"></div>
       {drinks.map((drink) => (
         <Drink key={drink.id} position={drink.position} />
       ))}

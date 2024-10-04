@@ -17,6 +17,8 @@ interface GameContextType {
   diffMulti: number;
   highScore: number;
   resetGame: () => void;
+  gameStart: boolean;
+  returnToMenu: () => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -30,6 +32,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [diffMulti, setDiffMulti] = useState<number>(1);
   const [highScore, setHighScore] = useState<number>(0);
+  const [gameStart, setGameStart] = useState<boolean>(false);
 
   //upon loss condition
   useEffect(() => {
@@ -42,26 +45,25 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
   //increase difficulty
   useEffect(() => {
-    //setDiffMulti increases rate of spawn AND speed across bar
-    switch (true) {
-      case drinksDelivered === 5:
-        console.log("Difficulty increase:", drinksDelivered);
-        setDiffMulti(1.25);
-        break;
-      case drinksDelivered === 10:
-        console.log("Difficulty increase:", drinksDelivered);
-        setDiffMulti(1.5);
-        break;
-      case drinksDelivered === 15:
-        console.log("Difficulty increase:", drinksDelivered);
-        setDiffMulti(1.75);
-        break;
+    const baseDrinks = 5; // drinks for each difficulty level
+    const increment = 0.25; // increment value for multiplier
+
+    if (drinksDelivered >= baseDrinks) {
+      const level = Math.floor(drinksDelivered / baseDrinks);
+      const newDiffMulti = 1 + level * increment;
+
+      setDiffMulti(newDiffMulti);
     }
   }, [drinksDelivered]);
 
   const resetGame = () => {
     setDrinksDelivered(0);
     setGameOver(false);
+    setGameStart(true);
+  };
+
+  const returnToMenu = () => {
+    setGameStart(false);
   };
 
   return (
@@ -74,6 +76,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         diffMulti,
         resetGame,
         highScore,
+        gameStart,
+        returnToMenu,
       }}
     >
       {children}

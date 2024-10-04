@@ -8,9 +8,9 @@ const Drink: React.FC<DrinkProps> = ({ position }) => {
   return (
     <div
       className="drink"
-      style={{ left: `${position}px`, top: "-25px", position: "absolute" }}
+      style={{ left: `${position}px`, bottom: "50%", position: "absolute" }}
     >
-      drink
+      <img src="beer.png" />
     </div>
   );
 };

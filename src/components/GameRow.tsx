@@ -24,7 +24,7 @@ const GameRow = () => {
 
   return (
     <>
-      <div style={{ display: "flex", width: "100%", border: "2px solid red" }}>
+      <div className="gameplay-row">
         <GameplayZone
           drinks={drinks}
           setBarWidth={setBarWidth}
