@@ -28,6 +28,7 @@ function GameContent() {
           <GameRow />
           <GameRow />
           <GameRow />
+          <GameRow />
         </>
       )}
     </>

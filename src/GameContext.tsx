@@ -52,6 +52,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       const level = Math.floor(drinksDelivered / baseDrinks);
       const newDiffMulti = 1 + level * increment;
 
+      console.log(newDiffMulti);
+
       setDiffMulti(newDiffMulti);
     }
   }, [drinksDelivered]);

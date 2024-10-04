@@ -185,9 +185,12 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
       }
     };
   }, [drinks, customers]);
-
+  const supports = Array.from({ length: 5 });
   return (
     <div className="bar" ref={barRef}>
+      {supports.map((_, index) => (
+        <div key={index} className="support"></div>
+      ))}
       {customers.map((customer) => (
         <Customer
           key={customer.id}
