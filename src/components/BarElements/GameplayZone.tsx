@@ -202,7 +202,6 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
       {drinks.map((drink) => (
         <Drink key={drink.id} position={drink.position} />
       ))}
-      {drinksDelivered}
     </div>
   );
 };

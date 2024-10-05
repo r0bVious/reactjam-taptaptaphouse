@@ -3,6 +3,7 @@ import GameRow from "./components/GameRow";
 import { GameProvider, useGameContext } from "./GameContext";
 import GameOver from "./components/GameOver";
 import MainMenu from "./components/MainMenu";
+import HUD from "./components/HUD";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function GameContent() {
         <GameOver />
       ) : (
         <>
+          <HUD />
           <GameRow />
           <GameRow />
           <GameRow />

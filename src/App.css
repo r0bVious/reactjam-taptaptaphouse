@@ -17,7 +17,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .gameplay-row {
@@ -241,4 +241,18 @@ p:last-of-type {
   to {
     color: rgba(199, 210, 50, 0.8);
   }
+}
+
+.hud {
+  padding: 0.5rem 0;
+  box-shadow: 0 5px 0 rgb(46, 24, 6);
+  text-shadow: 2px 2px 0px black;
+  font-family: "PressStart2P", monospace;
+  font-size: 0.65rem;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  text-align: center;
+  background: url("wood.png");
+  background-size: contain;
 }
