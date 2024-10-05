@@ -125,6 +125,9 @@
   gap: 1rem;
   border: 5px solid rgb(48, 27, 4);
   animation: 3s ease-out forwards grow-sign;
+  height: 300px;
+  transform-origin: bottom;
+  transform: scaleY(0);
 }
 
 .fancy {
@@ -144,6 +147,7 @@
   flex-direction: column;
   justify-content: space-around;
   height: 75%;
+  width: 100%;
 }
 
 .logo-taphouse {
@@ -175,6 +179,7 @@
   animation-delay: 3s, 1s;
   text-shadow: 0 0 5px #ff007f, 0 0 15px #ff007f, 0 0 30px #9d00ff,
     0 0 45px #9d00ff, 0 0 60px #ff007f;
+  align-self: center;
 }
 
 .pixel:nth-of-type(3) {
@@ -194,10 +199,10 @@
 
 @keyframes grow-sign {
   from {
-    height: 100px;
+    transform: scaleY(0);
   }
   to {
-    height: 300px;
+    transform: scaleY(1);
   }
 }
 
@@ -207,5 +212,33 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+.instructions p {
+  max-width: 300px;
+  text-indent: 1rem;
+  font-family: monospace;
+  font-size: 0.8rem;
+}
+
+.instructions h3 {
+  margin: 0;
+}
+
+p:last-of-type {
+  text-align: center;
+  text-indent: unset;
+  color: gray;
+  font-size: 0.65rem;
+}
+
+.warning {
+  animation: warning 2s ease-in-out alternate infinite;
+}
+
+@keyframes warning {
+  to {
+    color: rgba(199, 210, 50, 0.8);
   }
 }

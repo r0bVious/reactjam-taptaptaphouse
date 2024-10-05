@@ -13,7 +13,19 @@ const MainMenu = () => {
         </div>
         <span className="logo-taphouse fancy">Taphouse</span>
       </div>
-
+      <div className="instructions">
+        <h3>How to play:</h3>
+        <p>
+          Try to keep your thirtsy patrons at bay! Tapping a brew 3 times sends
+          a drink down the bar,{" "}
+          <span className="warning">
+            but be careful not to let your customers get too close - and don't
+            send a drink to noone!
+          </span>
+        </p>
+        <p>The longer you last, the harder it gets! Sling those drinks!</p>
+        <p>-- Inspired by the classic arcade game "Tapper" --</p>
+      </div>
       <button onClick={resetGame}>Start Game!</button>
     </div>
   );
