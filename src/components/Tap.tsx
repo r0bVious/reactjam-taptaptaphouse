@@ -11,8 +11,22 @@ const Tap: React.FC<TapProps> = ({ throwDrink }) => {
     timeoutRef.current = setTimeout(() => setFillDrink(0), 1000);
   };
 
+  const pourSoundRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    pourSoundRef.current = new Audio("/audio/handleCoins.ogg");
+
+    return () => {
+      pourSoundRef.current = null;
+    };
+  }, []);
+
   const pourDrink = () => {
     if (fillDrink >= 2) {
+      if (pourSoundRef.current) {
+        pourSoundRef.current.currentTime = 0;
+        pourSoundRef.current.play();
+      }
       throwDrink();
       setFillDrink(0);
     } else {
