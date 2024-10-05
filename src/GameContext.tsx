@@ -62,6 +62,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setDrinksDelivered(0);
     setGameOver(false);
     setGameStart(true);
+    setDiffMulti(1);
   };
 
   const returnToMenu = () => {
