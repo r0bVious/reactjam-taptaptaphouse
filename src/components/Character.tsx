@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { characters } from "../data";
+import { characters } from "../../public/data";
 
 type CharacterProps = {
   returning: boolean;

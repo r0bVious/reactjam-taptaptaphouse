@@ -8,6 +8,7 @@ import React, {
   SetStateAction,
   Dispatch,
 } from "react";
+import { characters } from "../public/data";
 
 interface GameContextType {
   setDrinksDelivered: Dispatch<SetStateAction<number>>;
@@ -37,10 +38,23 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [gameStart, setGameStart] = useState<boolean>(false);
   const [musicOn, setMusicOn] = useState<boolean>(true);
 
+  // Preload images
+  const preloadImages = () => {
+    characters.forEach((character) => {
+      character.img.forEach((imgUrl) => {
+        const img = new Image();
+        img.src = imgUrl;
+      });
+    });
+  };
+  useEffect(() => {
+    preloadImages();
+  }, []);
+
   //music
   const bgMusicRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
-    bgMusicRef.current = new Audio("/audio/Itty_Bitty_8_Bit.mp3");
+    bgMusicRef.current = new Audio("audio/Itty_Bitty_8_Bit.mp3");
     bgMusicRef.current.loop = true;
     return () => {
       if (bgMusicRef.current) {
@@ -53,6 +67,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const playMusic = (speed = 1) => {
     if (bgMusicRef.current && musicOn) {
       bgMusicRef.current.playbackRate = speed;
+      bgMusicRef.current.volume = 0.25;
       bgMusicRef.current.currentTime = 0;
       bgMusicRef.current.play().catch((error) => {
         console.error("Error playing audio:", error);
@@ -79,8 +94,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
   //increase difficulty
   useEffect(() => {
-    const baseDrinks = 8; // drinks for each difficulty level
-    const increment = 0.25; // increment value for multiplier
+    const baseDrinks = 10; // drinks for each difficulty level
+    const increment = 0.2; // increment value for multiplier
 
     if (drinksDelivered >= baseDrinks) {
       const level = Math.floor(drinksDelivered / baseDrinks);

@@ -53,24 +53,17 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
 
   // On load, begin interval calling spawnCustomer
   useEffect(() => {
-    const createRandomInterval = () => Math.random() * 1000 + 2500; // Randomized between 2.5 and 3.5 seconds
+    const createRandomInterval = () => Math.random() * 1000 + 1000;
     const spawnAndSetInterval = () => {
       spawnCustomer();
       const timeoutId = setTimeout(spawnAndSetInterval, createRandomInterval());
-      return timeoutId; // Return the timeout ID (a number)
+      return timeoutId;
     };
 
-    const timeoutId = spawnAndSetInterval(); // Start the loop
+    const timeoutId = spawnAndSetInterval();
 
-    return () => clearTimeout(timeoutId); // Clean up
+    return () => clearTimeout(timeoutId);
   }, []);
-
-  // Function to remove customer from the DOM when they reach the end of the bar (placeholder)
-  const dropCustomer = (customerID: string) => {
-    setCustomers((existingCustomers) =>
-      existingCustomers.filter((cust) => cust.id !== customerID)
-    );
-  };
 
   //function to remove successful drink-receiving customers
   const exitCustomer = (customerID: string) => {
@@ -93,7 +86,7 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
 
         //96 is half the size of a customer png
         if (cust.position >= barRef.current!.offsetWidth - 96) {
-          dropCustomer(cust.id);
+          exitCustomer(cust.id);
         }
 
         return { ...cust, position: newPosition };
@@ -179,7 +172,7 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
     updateCustomersPos();
     updateDrinksPos();
     checkCollision();
-    animationFrameRef.current = requestAnimationFrame(animate); // Store the ID
+    animationFrameRef.current = requestAnimationFrame(animate);
   };
 
   // Start animation when component mounts

@@ -1,12 +1,12 @@
 @font-face {
   font-family: "FancyPants";
-  src: url("fonts/FancyPants.woff");
+  src: url("/fonts/FancyPants.woff");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "PressStart2P";
-  src: url("fonts/PressStart2P-Regular.ttf");
+  src: url("/fonts/PressStart2P-Regular.ttf");
   font-weight: normal;
   font-style: normal;
 }
@@ -132,7 +132,7 @@
   justify-content: space-evenly;
   width: 100%;
   text-align: center;
-  background: url("wood.png");
+  background: url("/wood.png");
   background-size: contain;
 }
 
@@ -169,7 +169,7 @@
 
 .sign-main {
   position: relative;
-  background: url("wood.png");
+  background: url("/wood.png");
   background-size: cover;
   display: flex;
   flex-direction: column;

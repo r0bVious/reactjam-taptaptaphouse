@@ -14,7 +14,8 @@ const Tap: React.FC<TapProps> = ({ throwDrink }) => {
   const pourSoundRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    pourSoundRef.current = new Audio("/audio/handleCoins.ogg");
+    pourSoundRef.current = new Audio("audio/handleCoins.ogg");
+    pourSoundRef.current.volume = 0.35;
 
     return () => {
       pourSoundRef.current = null;
