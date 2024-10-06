@@ -17,14 +17,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
 }
 
+.game {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+/* gameplay zone aka bar */
 .gameplay-row {
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: center;
+  gap: 1rem;
 }
 
 .bar {
@@ -35,21 +45,24 @@
   justify-content: space-between;
   align-items: flex-end;
   display: flex;
+  border-bottom: 5px solid rgb(75, 43, 10);
 }
 
 .support {
-  height: 20%;
+  height: 30%;
   width: 5px;
   background: linear-gradient(rgb(75, 43, 10), rgb(48, 27, 4));
   z-index: 1;
 }
+
 .bar-shape {
-  height: 15%;
+  height: 10%;
   width: 100%;
   background: linear-gradient(rgb(179, 113, 55), rgb(48, 27, 4));
   position: absolute;
   top: 65%;
   border-radius: 0 5px 5px 0;
+  z-index: 5;
 }
 
 .customer {
@@ -82,10 +95,6 @@
   justify-content: center;
 }
 
-.tap img {
-  object-fit: cover;
-}
-
 .tap .unfilled {
   filter: grayscale(100%);
   position: absolute;
@@ -93,6 +102,49 @@
   left: 0;
 }
 
+.gameplay-tap::after {
+  content: "tap";
+  position: absolute;
+  font-family: "PressStart2P", monospace;
+  animation: wiggle 1s steps(3, end) alternate infinite;
+  color: rgb(165, 105, 41);
+}
+
+.gameplay-tap:nth-of-type(1)::after {
+  top: 35px;
+  left: 20px;
+  animation-delay: 0.7s;
+}
+
+.gameplay-tap:nth-of-type(2)::after {
+  bottom: 20px;
+  right: 40px;
+}
+
+.hud {
+  padding: 0.5rem 0;
+  box-shadow: 0 5px 0 rgb(46, 24, 6);
+  text-shadow: 2px 2px 0px black;
+  font-family: monospace;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  text-align: center;
+  background: url("wood.png");
+  background-size: contain;
+}
+
+.hud > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.hud span:nth-of-type(2) {
+  font-size: 1.5rem;
+}
+
+/*menu elements*/
 .gameover {
   display: flex;
   flex-direction: column;
@@ -108,7 +160,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   text-shadow: 2px 2px 0 black;
 }
 
@@ -121,10 +173,9 @@
   justify-content: space-between;
   gap: 1rem;
   border: 5px solid rgb(48, 27, 4);
-  animation: 3s ease-out forwards grow-sign;
+  animation: fadeInBounce 3s ease-in-out forwards;
   height: 300px;
   transform-origin: bottom;
-  transform: scaleY(0);
 }
 
 .fancy {
@@ -138,12 +189,12 @@
 
 .taptaps {
   position: absolute;
-  bottom: 5%;
+  bottom: 25%;
   left: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: 75%;
+  height: 55%;
   width: 100%;
 }
 
@@ -160,29 +211,63 @@
 
 .pixel {
   font-family: "PressStart2P", monospace;
-  font-size: 3rem;
   animation: fadeIn 0.5s steps(2, end) forwards,
-    wiggle 1s steps(3, end) alternate infinite; /* Add fadeIn animation */
+    wiggle 1s steps(3, end) alternate infinite;
   opacity: 0;
 }
 
 .pixel:nth-of-type(1) {
+  font-size: 3.5rem;
   animation-delay: 2s, 0.5s;
   text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14, 0 0 20px #00e0ff,
     0 0 40px #00e0ff, 0 0 60px #39ff14;
 }
 
 .pixel:nth-of-type(2) {
+  font-size: 2.5rem;
   animation-delay: 3s, 1s;
   text-shadow: 0 0 5px #ff007f, 0 0 15px #ff007f, 0 0 30px #9d00ff,
     0 0 45px #9d00ff, 0 0 60px #ff007f;
   align-self: center;
 }
 
-.pixel:nth-of-type(3) {
-  animation-delay: 4s, 1.5s;
-  text-shadow: 0 0 5px #00ccff, 0 0 10px #00ccff, 0 0 20px #00ccff,
-    0 0 40px #00ccff, 0 0 80px #0088ff;
+.logo-taphouse span {
+  --blueflicker: 0 0 2px #00ccff, 0 0 5px #00ccff, 0 0 10px #00ccff,
+    0 0 20px #00ccff, 0 0 40px #0088ff;
+  animation: flicker 2s infinite;
+  animation-delay: 4s;
+  display: inline-block;
+}
+
+@keyframes flicker {
+  0% {
+    text-shadow: var(--blueflicker);
+  }
+  5% {
+    text-shadow: none;
+  }
+  8% {
+    text-shadow: var(--blueflicker);
+  }
+  11% {
+    text-shadow: none;
+  }
+  15% {
+    text-shadow: var(--blueflicker);
+  }
+  65% {
+    text-shadow: var(--blueflicker);
+    transform: rotate(0);
+  }
+  70% {
+    text-shadow: none;
+  }
+  72% {
+    text-shadow: var(--blueflicker);
+  }
+  100% {
+    transform: rotate(3deg);
+  }
 }
 
 @keyframes wiggle {
@@ -194,12 +279,23 @@
   }
 }
 
-@keyframes grow-sign {
-  from {
-    transform: scaleY(0);
+@keyframes fadeInBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) translateY(-100px);
   }
-  to {
-    transform: scaleY(1);
+  40% {
+    opacity: 1;
+    transform: scale(1.2) translateY(0);
+  }
+  60% {
+    transform: scale(0.9) translateY(-10px);
+  }
+  80% {
+    transform: scale(1.05) translateY(5px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
   }
 }
 
@@ -240,16 +336,16 @@ p:last-of-type {
   }
 }
 
-.hud {
-  padding: 0.5rem 0;
-  box-shadow: 0 5px 0 rgb(46, 24, 6);
-  text-shadow: 2px 2px 0px black;
-  font-family: "PressStart2P", monospace;
-  font-size: 0.65rem;
-  display: flex;
-  justify-content: space-evenly;
-  width: 100%;
-  text-align: center;
-  background: url("wood.png");
-  background-size: contain;
+/* tablet and desktop */
+@media screen and (min-width: 768px) {
+  .menu-wrapper {
+    justify-content: space-evenly;
+  }
+  .instructions {
+    margin: 0 auto;
+    max-width: 30%;
+  }
+  .instructions p {
+    max-width: unset;
+  }
 }

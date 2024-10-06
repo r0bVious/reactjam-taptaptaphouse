@@ -56,6 +56,8 @@ const Tap: React.FC<TapProps> = ({ throwDrink }) => {
               : "clip-path 0.05s steps(2,end)",
         }}
       />
+      <span className="gameplay-tap"></span>
+      <span className="gameplay-tap"></span>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import React, {
   useState,
   useContext,
   useEffect,
+  useRef,
   ReactNode,
   SetStateAction,
   Dispatch,
@@ -34,6 +35,28 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [highScore, setHighScore] = useState<number>(0);
   const [gameStart, setGameStart] = useState<boolean>(false);
 
+  //music
+  const bgMusicRef = useRef<HTMLAudioElement | null>(null);
+  useEffect(() => {
+    bgMusicRef.current = new Audio("/audio/Itty_Bitty_8_Bit.mp3");
+    bgMusicRef.current.loop = true;
+    return () => {
+      if (bgMusicRef.current) {
+        bgMusicRef.current.pause();
+        bgMusicRef.current.currentTime = 0;
+      }
+    };
+  }, []);
+
+  const playMusic = () => {
+    if (bgMusicRef.current) {
+      console.log("Playing music...");
+      bgMusicRef.current.play().catch((error) => {
+        console.error("Error playing audio:", error);
+      });
+    }
+  };
+
   //upon loss condition
   useEffect(() => {
     if (gameOver) {
@@ -41,11 +64,15 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         setHighScore(drinksDelivered);
       }
     }
+    if (bgMusicRef.current) {
+      bgMusicRef.current.pause();
+      bgMusicRef.current.currentTime = 0;
+    }
   }, [gameOver]);
 
   //increase difficulty
   useEffect(() => {
-    const baseDrinks = 5; // drinks for each difficulty level
+    const baseDrinks = 8; // drinks for each difficulty level
     const increment = 0.25; // increment value for multiplier
 
     if (drinksDelivered >= baseDrinks) {
@@ -61,12 +88,16 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const resetGame = () => {
     setDrinksDelivered(0);
     setGameOver(false);
-    setGameStart(true);
     setDiffMulti(1);
+    playMusic();
+    setGameStart(true);
   };
 
   const returnToMenu = () => {
     setGameStart(false);
+    if (bgMusicRef.current) {
+      bgMusicRef.current.pause();
+    }
   };
 
   return (

@@ -6,12 +6,12 @@ const HUD = () => {
   return (
     <div className="hud">
       <div>
-        <h5>Drinks Delivered:</h5>
-        {drinksDelivered}
+        <span>Drinks Delivered:</span>
+        <span>{drinksDelivered}</span>
       </div>
       <div>
-        <h5>Speed Multiplier:</h5>
-        {diffMulti}x
+        <span>Speed Multiplier:</span>
+        <span>{diffMulti}x</span>
       </div>
     </div>
   );

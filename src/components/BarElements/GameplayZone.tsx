@@ -26,22 +26,22 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
     { id: string; position: number; returning: boolean }[]
   >([]);
   const [customerCount, setCustomerCount] = useState(0);
+  const [isGameOverTriggered, setIsGameOverTriggered] = useState(false);
 
   const animationFrameRef = useRef<number | null>(null);
-  const { setGameOver, setDrinksDelivered, drinksDelivered, diffMulti } =
-    useGameContext();
+  const { setGameOver, setDrinksDelivered, diffMulti } = useGameContext();
 
   // Get the width of the bar according to render size
   useEffect(() => {
     if (barRef.current) {
       setBarWidth(barRef.current.offsetWidth);
     }
-  }, [setBarWidth]);
+  }, [barRef]);
 
   // Function to spawn a new customer at position 0
   const spawnCustomer = () => {
     const chance = Math.random();
-    if (chance < 0.3 * diffMulti) {
+    if (chance < 0.45 * diffMulti) {
       const newCustomerID = `cust_${customerCount}_${Math.random()}`;
       setCustomerCount((prevCount) => prevCount + 1); // Increment customer count
       setCustomers((prev) => [
@@ -86,7 +86,7 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
   const updateCustomersPos = () => {
     setCustomers((prevCustomers) =>
       prevCustomers.map((cust) => {
-        const speed = barRef.current!.offsetWidth * 0.25;
+        const speed = barRef.current!.offsetWidth * 0.2;
         const newPosition =
           cust.position +
           ((cust.returning ? -1.5 : 1) * speed * diffMulti) / 60;
@@ -101,16 +101,23 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
     );
   };
 
-  //useEffect handling gamecontext updates
+  //useEffects handling gamecontext updates
+  //prevents ill-timed calls during renders?
   useEffect(() => {
     customers.forEach((cust) => {
       if (cust.position >= barRef.current!.offsetWidth - 96) {
-        setTimeout(() => setGameOver(true), 0); //prevents ill-timed calls during renders?
+        setTimeout(() => setGameOver(true), 0);
       } else if (cust.position <= 0 && cust.returning) {
         exitCustomer(cust.id);
       }
     });
   }, [customers]);
+  useEffect(() => {
+    if (isGameOverTriggered) {
+      setGameOver(true);
+      setIsGameOverTriggered(false);
+    }
+  }, [isGameOverTriggered]);
 
   const updateDrinksPos = () => {
     setDrinks((prevDrinks) => {
@@ -118,14 +125,14 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
         .map((drink) => {
           if (!drink) return null;
 
-          const speed = barRef.current!.offsetWidth * 0.25;
+          const speed = barRef.current!.offsetWidth * 0.2;
           const newPosition =
             drink.position -
             ((drink.metCust ? 1.5 : 3) * speed * diffMulti) / 60;
 
-          if (newPosition <= 0) {
+          if (newPosition <= -15) {
             if (!drink.metCust) {
-              setGameOver(true);
+              setIsGameOverTriggered(true);
             }
             return null;
           }

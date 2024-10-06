@@ -9,9 +9,10 @@ const MainMenu = () => {
         <div className="taptaps">
           <span className="logo-tap pixel">Tap</span>
           <span className="logo-tap pixel">Tap</span>
-          <span className="logo-tap pixel">Tap</span>
         </div>
-        <span className="logo-taphouse fancy">Taphouse</span>
+        <span className="logo-taphouse fancy">
+          <span>Tap</span>house
+        </span>
       </div>
       <div className="instructions">
         <h3>How to play:</h3>
@@ -20,7 +21,7 @@ const MainMenu = () => {
           a drink down the bar,{" "}
           <span className="warning">
             but be careful not to let your customers get too close - and don't
-            send a drink to noone!
+            send a drink to the end of an empty bar!
           </span>
         </p>
         <p>The longer you last, the harder it gets! Sling those drinks!</p>
