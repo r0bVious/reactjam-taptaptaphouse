@@ -41,7 +41,7 @@ const GameplayZone: React.FC<GameplayZoneProps> = ({
   // Function to spawn a new customer at position 0
   const spawnCustomer = () => {
     const chance = Math.random();
-    if (chance < 0.45 * diffMulti) {
+    if (chance < 0.4 * diffMulti) {
       const newCustomerID = `cust_${customerCount}_${Math.random()}`;
       setCustomerCount((prevCount) => prevCount + 1); // Increment customer count
       setCustomers((prev) => [

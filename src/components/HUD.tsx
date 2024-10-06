@@ -11,7 +11,7 @@ const HUD = () => {
       </div>
       <div>
         <span>Speed Multiplier:</span>
-        <span>{diffMulti}x</span>
+        <span>{diffMulti.toFixed(2)}x</span>
       </div>
     </div>
   );
