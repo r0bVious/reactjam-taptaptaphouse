@@ -1,7 +1,7 @@
 import { useGameContext } from "../GameContext";
 
 const MainMenu = () => {
-  const { resetGame } = useGameContext();
+  const { resetGame, musicToggle, musicOn } = useGameContext();
   return (
     <div className="menu-wrapper">
       <div className="sign-main">
@@ -27,7 +27,12 @@ const MainMenu = () => {
         <p>The longer you last, the harder it gets! Sling those drinks!</p>
         <p>-- Inspired by the classic arcade game "Tapper" --</p>
       </div>
-      <button onClick={resetGame}>Start Game!</button>
+      <div className="menu-buttons">
+        <button onClick={resetGame}>Start Game!</button>
+        <button onClick={musicToggle}>
+          Music is {musicOn ? "ON" : "OFF"}!
+        </button>
+      </div>
     </div>
   );
 };

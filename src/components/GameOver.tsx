@@ -14,8 +14,10 @@ const GameOver = () => {
       ) : (
         <h3>{highScore} is your highest score yet!</h3>
       )}
-      <button onClick={resetGame}>Thirsty for more?</button>
-      <button onClick={returnToMenu}>Return to Main Menu</button>
+      <div className="menu-buttons">
+        <button onClick={resetGame}>Thirsty for more?</button>
+        <button onClick={returnToMenu}>Main Menu</button>
+      </div>
     </div>
   );
 };

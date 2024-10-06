@@ -19,6 +19,8 @@ interface GameContextType {
   resetGame: () => void;
   gameStart: boolean;
   returnToMenu: () => void;
+  musicToggle: () => void;
+  musicOn: boolean;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -33,6 +35,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [diffMulti, setDiffMulti] = useState<number>(1);
   const [highScore, setHighScore] = useState<number>(0);
   const [gameStart, setGameStart] = useState<boolean>(false);
+  const [musicOn, setMusicOn] = useState<boolean>(true);
 
   //music
   const bgMusicRef = useRef<HTMLAudioElement | null>(null);
@@ -48,13 +51,17 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   }, []);
 
   const playMusic = (speed = 1) => {
-    if (bgMusicRef.current) {
+    if (bgMusicRef.current && musicOn) {
       bgMusicRef.current.playbackRate = speed;
       bgMusicRef.current.currentTime = 0;
       bgMusicRef.current.play().catch((error) => {
         console.error("Error playing audio:", error);
       });
     }
+  };
+
+  const musicToggle = () => {
+    setMusicOn(!musicOn);
   };
 
   //upon loss condition
@@ -89,7 +96,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setDrinksDelivered(0);
     setGameOver(false);
     setDiffMulti(1);
-    playMusic(diffMulti);
+    playMusic();
     setGameStart(true);
   };
 
@@ -112,6 +119,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         highScore,
         gameStart,
         returnToMenu,
+        musicToggle,
+        musicOn,
       }}
     >
       {children}
