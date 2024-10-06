@@ -9,7 +9,6 @@ import React, {
   Dispatch,
 } from "react";
 
-//what's this doing?
 interface GameContextType {
   setDrinksDelivered: Dispatch<SetStateAction<number>>;
   drinksDelivered: number;
@@ -48,9 +47,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     };
   }, []);
 
-  const playMusic = () => {
+  const playMusic = (speed = 1) => {
     if (bgMusicRef.current) {
-      console.log("Playing music...");
+      bgMusicRef.current.playbackRate = speed;
+      bgMusicRef.current.currentTime = 0;
       bgMusicRef.current.play().catch((error) => {
         console.error("Error playing audio:", error);
       });
@@ -63,10 +63,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       if (drinksDelivered > highScore) {
         setHighScore(drinksDelivered);
       }
-    }
-    if (bgMusicRef.current) {
-      bgMusicRef.current.pause();
-      bgMusicRef.current.currentTime = 0;
+      if (bgMusicRef.current) {
+        bgMusicRef.current.pause();
+        bgMusicRef.current.currentTime = 0;
+      }
     }
   }, [gameOver]);
 
@@ -78,10 +78,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     if (drinksDelivered >= baseDrinks) {
       const level = Math.floor(drinksDelivered / baseDrinks);
       const newDiffMulti = 1 + level * increment;
-
-      console.log(newDiffMulti);
-
       setDiffMulti(newDiffMulti);
+      if (bgMusicRef.current) {
+        bgMusicRef.current.playbackRate *= 1.01;
+      }
     }
   }, [drinksDelivered]);
 
@@ -89,7 +89,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setDrinksDelivered(0);
     setGameOver(false);
     setDiffMulti(1);
-    playMusic();
+    playMusic(diffMulti);
     setGameStart(true);
   };
 
