@@ -63,7 +63,9 @@ const MainMenu = () => {
             </p>
             <p>The longer you last, the harder it gets! Sling those drinks!</p>
           </div>
-          <p>Tap me to play!</p>
+          <h3>
+            Tap the mug <u>3 times</u> to play!
+          </h3>
           <Tap throwDrink={resetGame} />
           <button onClick={toggleThanks}>Thanks!</button>
           <button onClick={musicToggle}>
