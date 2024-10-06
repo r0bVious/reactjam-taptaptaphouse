@@ -12,7 +12,7 @@
 }
 
 #root {
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -93,6 +93,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  text-shadow: none;
 }
 
 .tap .unfilled {
@@ -176,7 +177,7 @@
   gap: 1rem;
   border: 5px solid rgb(48, 27, 4);
   animation: fadeInBounce 3s ease-in-out forwards;
-  height: 300px;
+  height: 250px;
   transform-origin: bottom;
 }
 
@@ -310,22 +311,16 @@
   }
 }
 
-.instructions p {
+.menu-wrapper p {
   max-width: 300px;
   text-indent: 1rem;
   font-family: monospace;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
 .instructions h3 {
   margin: 0;
-}
-
-p:last-of-type {
-  text-align: center;
-  text-indent: unset;
-  color: gray;
-  font-size: 0.65rem;
+  font-family: monospace;
 }
 
 .warning {
@@ -339,18 +334,10 @@ p:last-of-type {
 }
 
 button {
-  padding: 2rem 3rem;
-  min-width: 75%;
+  min-width: 10rem;
+  min-height: 5%;
   font-family: monospace;
   font-size: 0.8rem;
-}
-
-.menu-buttons {
-  width: 50%;
-  max-width: 500px;
-  display: flex;
-  justify-content: space-evenly;
-  gap: 25px;
 }
 
 /* tablet and desktop */

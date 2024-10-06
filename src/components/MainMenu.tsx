@@ -1,4 +1,5 @@
 import { useGameContext } from "../GameContext";
+import Tap from "./Tap";
 
 const MainMenu = () => {
   const { resetGame, musicToggle, musicOn } = useGameContext();
@@ -20,19 +21,15 @@ const MainMenu = () => {
           Try to keep your thirtsy patrons at bay! Tapping a brew 3 times sends
           a drink down the bar,{" "}
           <span className="warning">
-            but be careful not to let your customers get too close - and don't
-            send a drink to the end of an empty bar!
+            but don't let your customers get too close or send a drink to the
+            end of an empty bar!
           </span>
         </p>
         <p>The longer you last, the harder it gets! Sling those drinks!</p>
-        <p>-- Inspired by the classic arcade game "Tapper" --</p>
       </div>
-      <div className="menu-buttons">
-        <button onClick={resetGame}>Start Game!</button>
-        <button onClick={musicToggle}>
-          Music is {musicOn ? "ON" : "OFF"}!
-        </button>
-      </div>
+      <p>Tap me to play!</p>
+      <Tap throwDrink={resetGame} />
+      <button onClick={musicToggle}>Music is {musicOn ? "ON" : "OFF"}!</button>
     </div>
   );
 };
